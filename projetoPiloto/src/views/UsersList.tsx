@@ -1,8 +1,10 @@
 import React from "react"
+import TableUsersList from "../components/pages/usersList/tableUsersList"
 
 const UsersList: React.FC = () => {
     return(
-        <div>fsdfds
+        <div>
+            <TableUsersList/>
         </div>
     )
 }
