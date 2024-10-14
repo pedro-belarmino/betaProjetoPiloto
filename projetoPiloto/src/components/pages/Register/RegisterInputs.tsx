@@ -1,77 +1,100 @@
 import { FC, useState } from "react";
 import Inputs from "../../shared/Inputs";
 import '../../../styles/registerInputs.sass'
+import axios from "axios";
 
 
-interface RegisterInputsProps {
-}
+const RegisterInputs: FC = () => {
 
-const RegisterInputs: FC<RegisterInputsProps> = () => {
+    const [userName, setUserName] = useState<string>('');
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
+    const [userCPF, setUserCPF] = useState<string>('');
 
-    // Criar o estado local para armazenar os valores dos inputs
-    const [formValues, setFormValues] = useState({
-        name: "",
-        email: "",
-        CPF: "",
-        phoneNumber: ""
-    });
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValues({
-            ...formValues,
-            [name]: value // atualizar o valor do campo
-        });
+    const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserName(e.target.value);
+    };
+    const handleUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserEmail(e.target.value);
+    };
+    const handleUserPhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserPhoneNumber(e.target.value);
+    };
+    const handleUserCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserCPF(e.target.value);
     };
 
-    const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        // Permite apenas números
-        if (/^\d*$/.test(value)) {
-            setFormValues({
-                ...formValues,
-                [name]: value // Atualiza o valor do campo correspondente
+
+    const handleRegisterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post('http://192.168.0.105:8080/api-test/castrar', {
+                userName: userName,
+                email: userEmail,
+                phone: userPhoneNumber,
+                cpf: userCPF,
             });
-        }
-    };
+            console.log('Código de status:', response.status);
 
+            if (response.status === 200) {
+                console.log('cadastro enviado!', response.data);
+            
+            }
+
+        } catch (error: any) {
+            if (error.response) {
+                console.log('Erro no envio das informações do usuario sla tbm', error.response.status);
+                console.error('Mensagem de erro:', error.response.data);
+            } else {
+                console.error('Erro na requisição:', error.message);
+
+            }
+        }
+    }
 
     return (
         <div className="registerInputsContainer">
-            <label htmlFor="name" className="labelRegisterInput">NOME</label>
-            <Inputs
-                type="text"
-                name="name"
-                value={formValues.name}
-                onChange={handleInputChange}
-            />
-            <label htmlFor="email" className="labelRegisterInput">EMAIL</label>
-            <Inputs
-                type="text"
-                name="email"
-                value={formValues.email}
-                onChange={handleInputChange}
-            />
-            <label htmlFor="phoneNumber" className="labelRegisterInput">TELEFONE</label>
-            <Inputs
-                type="text"
-                name="phoneNumber"
-                value={formValues.phoneNumber}
-                inputMode="numeric"
-                pattern="[0-9]*"
-                onChange={handleNumberInput}
-            />
-            <label htmlFor="CPF" className="labelRegisterInput">CPF</label>
-            <Inputs
-                type="text"
-                name="CPF"
-                value={formValues.CPF}
-                inputMode="numeric"
-                pattern="[0-9]*"
-                onChange={handleNumberInput}
-            />
-            <button type="submit" name="submit" className='submitRegisterButton'>Criar</button>
 
+            <form onSubmit={handleRegisterSubmit}>
+                {/* <label htmlFor="name" className="labelRegisterInput">NOME</label> */}
+                <Inputs
+                    type="text"
+                    name="name"
+                    value={userName}
+                    placeholder="Nome"
+                    onChange={handleUserNameChange}
+                />
+                {/* <label htmlFor="email" className="labelRegisterInput">EMAIL</label> */}
+                <Inputs
+                    type="text"
+                    name="email"
+                    value={userEmail}
+                    placeholder="E-mail"
+                    onChange={handleUserEmailChange}
+                />
+                {/* <label htmlFor="phoneNumber" className="labelRegisterInput">TELEFONE</label> */}
+                <Inputs
+                    type="text"
+                    name="phoneNumber"
+                    value={userPhoneNumber}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    placeholder="Telefone"
+                    onChange={handleUserPhoneNumberChange}
+                />
+                {/* <label htmlFor="CPF" className="labelRegisterInput">CPF</label> */}
+                <Inputs
+                    type="text"
+                    name="CPF"
+                    value={userCPF}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    placeholder="CPF"
+                    onChange={handleUserCPFChange}
+                />
+                <button type="submit" name="submit" className='submitRegisterButton'>Criar</button>
+            </form>
 
         </div>
     )

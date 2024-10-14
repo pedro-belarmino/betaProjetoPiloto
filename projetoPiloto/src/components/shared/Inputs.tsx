@@ -11,9 +11,10 @@ interface InputsProps {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     inputMode?:  "search" | "email" | "tel" | "text" | "url" | "none" | "numeric" | "decimal";  //  inputMode para o RegisterInput. Garantir que o tipo seja restrito.
     pattern?: string;    //  pattern para o RegisterInput
+    placeholder?: string;
 }
 
-const Inputs: FC<InputsProps> = ({ type, name, value, onChange, inputMode, pattern }) => {
+const Inputs: FC<InputsProps> = ({ type, name, value, onChange, inputMode, pattern, placeholder }) => {
     return (
         <div className='inputContainer'>
             <input
@@ -22,7 +23,7 @@ const Inputs: FC<InputsProps> = ({ type, name, value, onChange, inputMode, patte
                 id={name}
                 value={value}
                 className="input"
-                placeholder={name}
+                placeholder={placeholder}
                 onChange={onChange}
                 inputMode={inputMode}
                 pattern={pattern}

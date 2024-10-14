@@ -5,7 +5,7 @@ import { UserProvider } from './contexts/UserContext';
 import '../src/styles/index.sass'
 import Register from './views/Register';
 import Editing from './views/Editing';
-import UsersList from './views/usersList';
+import UsersList from './views/UsersList';
 
 const App: React.FC = () => {
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
     <UserProvider>
     <BrowserRouter>
     <Routes>
-    <Route path='/' element={<Login />}/>
+    <Route path='/login' element={<Login />}/>
     <Route path='/home' element={<Home />}/>
     <Route path='/register' element={<Register />}/>
     <Route path='/editing' element={<Editing />}/>

@@ -8,7 +8,7 @@ import '../../../styles/loginForm.sass'
 const LoginForm: React.FC = () => {
 
     const [userPassword, setUserPassword] = useState<string>('');
-    const { userLogin, setUserLogin, setMessage } = useUserContext(); // Pegando message e setMessage do contexto
+    const { userLogin, setUserLogin, setMessage } = useUserContext(); // Pegando setMessage do contexto
     const navigate = useNavigate();
 
     const handleUserLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
             if (response.status === 200) {
                 console.log('Login bem-sucedido!', response.data);
                 
-                setMessage(response.data.token || 'Token não encontrado'); // guarda o token no setMessage
+                setMessage(response.data.token || 'Token não encontrado'); 
 
                 navigate('/home');
             }
@@ -50,8 +50,8 @@ const LoginForm: React.FC = () => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <Inputs type="text" name="login" value={userLogin} onChange={handleUserLoginChange} />
-                <Inputs type="password" name="password" value={userPassword} onChange={handleUserPasswordChange}/>
+                <Inputs type="text" placeholder='Login' name="login" value={userLogin} onChange={handleUserLoginChange} />
+                <Inputs type="password" placeholder='Senha' name="password" value={userPassword} onChange={handleUserPasswordChange}/>
                 <button type="submit" name="submit" className='submitButton'>Sing In</button>
             </form>
         </div>
