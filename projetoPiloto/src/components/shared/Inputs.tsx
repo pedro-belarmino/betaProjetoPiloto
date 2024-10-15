@@ -10,7 +10,7 @@ interface InputsProps {
     value: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     inputMode?:  "search" | "email" | "tel" | "text" | "url" | "none" | "numeric" | "decimal";  //  inputMode para o RegisterInput. Garantir que o tipo seja restrito.
-    pattern?: string;    //  pattern para o RegisterInput
+    pattern?: string;
     placeholder?: string;
 }
 

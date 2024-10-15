@@ -3,6 +3,20 @@ import Inputs from "../../shared/Inputs";
 import '../../../styles/registerInputs.sass'
 import axios from "axios";
 
+const formatCPF = (value: string) => {
+    const numericCPFValue = value.replace(/\D/g, '').slice(0, 11);
+    return numericCPFValue
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+};
+
+const formatPhoneNumber = (value: string) => {
+    const numericPhoneValue = value.replace(/\D/g, '').slice(0, 11);
+    return numericPhoneValue
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{1})(\d{4})(\d{4})/, '$1 $2-$3');
+};
 
 const RegisterInputs: FC = () => {
 
@@ -19,9 +33,11 @@ const RegisterInputs: FC = () => {
     };
     const handleUserPhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserPhoneNumber(e.target.value);
+        setUserPhoneNumber(formatPhoneNumber);
     };
     const handleUserCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserCPF(e.target.value);
+        setUserCPF(formatCPF);
     };
 
 
@@ -32,22 +48,26 @@ const RegisterInputs: FC = () => {
             const response = await axios.post('http://192.168.0.105:8080/api-test/castrar', {
                 userName: userName,
                 email: userEmail,
-                phone: userPhoneNumber,
-                cpf: userCPF,
+                phone: userPhoneNumber.replace(/\D/g, ''),
+                cpf: userCPF.replace(/\D/g, '')
             });
             console.log('Código de status:', response.status);
 
+            setUserName('');
+            setUserEmail('');
+            setUserPhoneNumber('');
+            setUserCPF('');
+
             if (response.status === 200) {
-                console.log('cadastro enviado!', response.data);
-            
+                console.log('Cadastro Enviado!\n', response.data);
             }
 
         } catch (error: any) {
             if (error.response) {
-                console.log('Erro no envio das informações do usuario sla tbm', error.response.status);
+                console.log('Erro no envio das informações do usuário', error.response.status);
                 console.error('Mensagem de erro:', error.response.data);
             } else {
-                console.error('Erro na requisição:', error.message);
+                console.error('Erro na requisição, não enviado:', error.message);
 
             }
         }
@@ -79,7 +99,7 @@ const RegisterInputs: FC = () => {
                     name="phoneNumber"
                     value={userPhoneNumber}
                     inputMode="numeric"
-                    pattern="[0-9]*"
+                    pattern="\(\d{2}\) \d{1} \d{4}-\d{4}"
                     placeholder="Telefone"
                     onChange={handleUserPhoneNumberChange}
                 />
@@ -89,12 +109,14 @@ const RegisterInputs: FC = () => {
                     name="CPF"
                     value={userCPF}
                     inputMode="numeric"
-                    pattern="[0-9]*"
+                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
                     placeholder="CPF"
                     onChange={handleUserCPFChange}
+
                 />
                 <button type="submit" name="submit" className='submitRegisterButton'>Criar</button>
             </form>
+
 
         </div>
     )

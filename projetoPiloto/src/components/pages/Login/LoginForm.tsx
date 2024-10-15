@@ -25,14 +25,14 @@ const LoginForm: React.FC = () => {
             const response = await axios.post('http://192.168.0.105:5480/api-boilerplate/v1/token', {
                 username: userLogin,
                 password: userPassword,
-            }); 
+            });
 
             console.log('Código de status:', response.status);
 
             if (response.status === 200) {
                 console.log('Login bem-sucedido!', response.data);
-                
-                setMessage(response.data.token || 'Token não encontrado'); 
+
+                setMessage(response.data.token || 'Token não encontrado');
 
                 navigate('/home');
             }
@@ -42,7 +42,7 @@ const LoginForm: React.FC = () => {
                 console.log('Erro no servidor, código de status:', error.response.status);
                 console.error('Mensagem de erro:', error.response.data);
             } else {
-                console.error('Erro na requisição:', error.message);
+                console.error('Erro na requisição, não enviado   ', error.message);
             }
         }
     };
@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
         <div>
             <form onSubmit={handleSubmit}>
                 <Inputs type="text" placeholder='Login' name="login" value={userLogin} onChange={handleUserLoginChange} />
-                <Inputs type="password" placeholder='Senha' name="password" value={userPassword} onChange={handleUserPasswordChange}/>
+                <Inputs type="password" placeholder='Senha' name="password" value={userPassword} onChange={handleUserPasswordChange} />
                 <button type="submit" name="submit" className='submitButton'>Sing In</button>
             </form>
         </div>
