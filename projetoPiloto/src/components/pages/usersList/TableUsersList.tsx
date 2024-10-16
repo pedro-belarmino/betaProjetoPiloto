@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react"
 import '../../../styles/tableUsersList.sass'
 import axios from "axios";
-import Inputs from "../../shared/Inputs";
 
 interface ShowUser {
     id: number;
@@ -11,20 +10,6 @@ interface ShowUser {
     phone: string;
 }
 
-const formatCPF = (value: string) => {
-    const numericCPFValue = value.replace(/\D/g, '').slice(0, 11);
-    return numericCPFValue
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-};
-
-const formatPhoneNumber = (value: string) => {
-    const numericPhoneValue = value.replace(/\D/g, '').slice(0, 11);
-    return numericPhoneValue
-        .replace(/(\d{2})(\d)/, '($1) $2')
-        .replace(/(\d{1})(\d{4})(\d{4})/, '$1 $2-$3');
-};
 
 
 const TableUsersList: FC = () => {
@@ -44,17 +29,31 @@ const TableUsersList: FC = () => {
         }
     };
 
+    const formatCpf = (cpf: string): string => {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    };
+
+    const formatPhoneNumber = (phone: string): string => {
+        return phone.replace(/(\d{2})(\d{1})(\d{4})(\d{5})/, '($1) $2 $3-$4');
+    };
+
     //carregar os usuários
     useEffect(() => {
         fetchUsers();
     }, []);
 
     if (loading) {
-        return <div className="loadingMessage">Carregando usuários...</div>;
+        return <div className="loadingMessage">
+                    <h1>Carregando usuários...</h1>
+                    <img src="" alt="loading" className="loadingImage" /> 
+                </div>;
     }
 
     if (error) {
-        return <div className="errorMessage">{error}</div>;
+        return <div className="errorMessage">
+            <img src="" alt="" />
+            <p>{error}</p>
+            </div>;
     }
 
     return (
@@ -76,8 +75,8 @@ const TableUsersList: FC = () => {
                             <td>{user.id}</td>
                             <td>{user.userName}</td>
                             <td>{user.email}</td>
-                            <td>{user.cpf}</td>
-                            <td>{user.phone}</td>
+                            <td>{formatCpf(user.cpf)}</td>
+                            <td>{formatPhoneNumber(user.phone)}</td>   
                             <td>
                                 <button type="button" name="editing" className="editingUserButton" />
                                 <button type="button" name="able" className="ableUserButton" />

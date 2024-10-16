@@ -1,0 +1,72 @@
+.sidebar
+  background-color: #00BFFF  // Cor de fundo da sidebar
+  color: #ecf0f1             // Cor do texto
+  width: 250px               // Largura da sidebar
+  height: 100vh              // Altura da sidebar
+  padding: 20px              // Padding interno
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1) // Sombra à direita
+  position: fixed             // Fixa a sidebar na tela
+  top: 0                      // Alinha ao topo da tela
+  left: -250px                // Começa fora da tela
+  transition: left 0.3s ease  // Animação ao abrir/fechar
+
+  &.open
+    left: 0         
+
+h2
+  font-size: 24px
+  margin-bottom: 20px
+  text-align: center
+
+ul
+  list-style: none
+  padding: 0
+  margin-top: 100px  // Adiciona espaço no topo da lista
+
+  li
+    margin: 15px 0
+
+    a
+      text-decoration: none
+      color: #ecf0f1
+      padding: 10px 15px
+      display: block
+      border-radius: 5px
+      transition: background-color 0.3s ease
+
+      &:hover
+        background-color: rgba(255, 255, 255, 0.2) // Efeito de hover
+
+    .submenu-toggle
+      ccursor: pointer
+      display: flex
+      align-items: center
+      justify-content: space-between
+      background: none
+      border: none
+      color: inherit
+      width: 93%
+      padding: 10px
+      border-radius: 5px
+      transition: background-color 0.3s eas
+
+      &:hover
+        background-color: rgba(255, 255, 255, 0.2) // Efeito de hover na submenu-toggle
+
+      .arrow //triangulo
+        transition: transform 0.3s ease
+        font-size: 15px
+        padding-left: -20px
+        margin-left: auto
+
+        &.open
+          transform: rotate(180deg)
+
+  // Submenu
+  ul
+    display: none
+    padding-left: 1.5rem
+    margin-top: 20px
+
+    &.open
+      display: block
